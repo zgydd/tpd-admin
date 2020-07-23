@@ -80,6 +80,7 @@ function createRequestFunction (service) {
     const configDefault = {
       headers: {
         Authorization: token,
+        'token': token,
         'Content-Type': get(config, 'headers.Content-Type', 'application/json')
       },
       timeout: 5000,

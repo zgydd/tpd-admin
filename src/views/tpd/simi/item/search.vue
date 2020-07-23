@@ -1,6 +1,8 @@
 <template>
   <d2-container class="page">
-    首页出点什么？
+    <template slot="header">header</template>
+    SIMI - Item Index
+    <template slot="footer">footer</template>
   </d2-container>
 </template>
 
@@ -12,9 +14,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page {
-  .logo {
-    width: 120px;
-  }
-}
 </style>

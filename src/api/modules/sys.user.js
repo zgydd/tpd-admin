@@ -18,7 +18,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
       .reply(config => {
         const user = find(users, tools.parse(config.data))
         return user
-          ? tools.responseSuccess(assign({}, user, { token: faker.random.uuid() }))
+          ? tools.responseSuccess(assign({}, user, { token: 'EEC04667-0A57-A39C-C450-E4BC38FA497F' }))
           : tools.responseError({}, '账号或密码不正确')
       })
     // 接口请求

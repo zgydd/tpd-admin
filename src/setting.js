@@ -14,16 +14,14 @@ export default {
   },
   // 在读取持久化数据失败时默认页面
   page: {
-    opened: [
-      {
-        name: 'index',
-        fullPath: '/index',
-        meta: {
-          title: '首页',
-          auth: false
-        }
+    opened: [{
+      name: 'index',
+      fullPath: '/index',
+      meta: {
+        title: '首页',
+        auth: false
       }
-    ]
+    }]
   },
   // 菜单搜索
   search: {
@@ -31,9 +29,8 @@ export default {
   },
   // 注册的主题
   theme: {
-    list: [
-      {
-        title: 'd2admin 经典',
+    list: [{
+        title: '经典',
         name: 'd2',
         preview: 'image/theme/d2/preview@2x.png'
       },
