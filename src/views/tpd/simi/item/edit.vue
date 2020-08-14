@@ -1,18 +1,18 @@
 <template>
   <d2-container class="page">
     <template slot="header">
-      <el-tag v-if="!isCreate">标准ID：{{currentId}}</el-tag>
-      <el-tag v-if="isCreate" type="success">新建标准</el-tag>
+      <el-tag v-if="!isCreate">项目ID：{{currentId}}</el-tag>
+      <el-tag v-if="isCreate" type="success">新建项目</el-tag>
     </template>
-    <tpd-standard-info :standardId="currentId" @standardSaved="standardSaved()"></tpd-standard-info>
+    <tpd-item-info :itemId="currentId" @itemSaved="itemSaved()"></tpd-item-info>
     <template slot="footer"></template>
   </d2-container>
 </template>
 
 <script>
-import TpdStandardInfo from '../../components/simi/standard/standardInfo'
+import TpdItemInfo from '../../components/simi/item/itemInfo'
 export default {
-  components: { TpdStandardInfo },
+  components: { TpdItemInfo },
   data() {
     return {
       isCreate: true,
@@ -26,13 +26,13 @@ export default {
     }
   },
   methods: {
-    standardSaved: function () {
+    itemSaved: function () {
       this.$store
         .dispatch('d2admin/page/close', {
-          tagName: '/simi/standard-edit',
+          tagName: '/simi/item-edit',
         })
         .then(() => {
-          this.$store.dispatch('simi/standard/refreshList')
+          this.$store.dispatch('simi/item/refreshList')
         })
     },
   },

@@ -18,10 +18,25 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             data: data
         })
     },
+    BASE_PUT(url = '', data = {}) {
+        return request({
+            baseURL: process.env.VUE_APP_API,
+            url,
+            method: 'put',
+            data: data
+        })
+    },
     STANDARD_FIND(keyWord = '', pageNumber = 1, pageSize = 20) {
         return request({
             baseURL: process.env.VUE_APP_API,
             url: 'logic/SIMI/SearchStandard?keyWord=' + keyWord + '&pageNumber=' + pageNumber + '&pageSize=' + pageSize,
+            method: 'get'
+        })
+    },
+    ITEM_FIND(keyWord = '', pageNumber = 1, pageSize = 20) {
+        return request({
+            baseURL: process.env.VUE_APP_API,
+            url: 'logic/SIMI/SearchItem?keyWord=' + keyWord + '&pageNumber=' + pageNumber + '&pageSize=' + pageSize,
             method: 'get'
         })
     }

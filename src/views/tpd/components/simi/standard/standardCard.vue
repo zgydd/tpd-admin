@@ -2,23 +2,38 @@
   <el-card class="standard-card">
     <div slot="header" class="clearfix">
       <span
-        :title="standard.code + standard.name"
+        :title="standard.standardCode + standard.name"
         class="card-title"
-      >{{standard.code + standard.name}}</span>
+      >{{standard.standardCode + standard.name}}</span>
       <div class="sub-title" title="公众键">{{standard.openKey}}</div>
     </div>
     <ul>
       <li>{{standard.englishName}}</li>
-      <li>出版社 {{standard.publisher}}</li>
-      <li>书号 {{standard.bookMark}}</li>
-      <li>主管单位 {{standard.chargeOrganization}}</li>
-      <li>归属单位 {{standard.attribution}}</li>
-      <li>起草单位 {{standard.draftUnit}}</li>
+      <li>
+        <label class="item-title">出版社</label>
+        &nbsp;{{standard.publisher}}
+      </li>
+      <li>
+        <label class="item-title">书号</label>
+        &nbsp;{{standard.bookMark}}
+      </li>
+      <li>
+        <label class="item-title">主管单位</label>
+        &nbsp;{{standard.chargeOrganization}}
+      </li>
+      <li>
+        <label class="item-title">归属单位</label>
+        &nbsp;{{standard.attribution}}
+      </li>
+      <li>
+        <label class="item-title">起草单位</label>
+        &nbsp;{{standard.draftUnit}}
+      </li>
       <li>{{standard.replace}}</li>
       <li class="sub-title">{{standard.description}}</li>
     </ul>
     <div class="bottom clearfix">
-      <time class="time">{{ standard.publishTime | dateFormat }}</time>出版
+      <time class="time">{{ standard.publicationTime | dateFormat }}</time>出版
       <el-button class="d2-fr" type="primary" icon="el-icon-edit" @click="showEdit(standard.id)"></el-button>
     </div>
   </el-card>
@@ -63,6 +78,13 @@ ul {
 }
 .time {
   color: #999;
+}
+label.item-title {
+  color: #aaa;
+  font: {
+    size: larger;
+    weight: bolder;
+  }
 }
 .standard-card {
   display: inline-block;

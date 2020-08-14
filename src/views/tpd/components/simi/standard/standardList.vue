@@ -1,10 +1,16 @@
 <template>
   <el-table :data="standardData" style="width:100%;" height="100%">
+    <el-table-column width="150" fixed prop="standardCode" label="编号"></el-table-column>
     <el-table-column width="250" fixed prop="name" label="名称"></el-table-column>
-    <el-table-column width="120" fixed prop="code" label="编号"></el-table-column>
-    <el-table-column width="80" prop="status" label="状态"></el-table-column>
-    <el-table-column width="100" prop="type" label="标准类型"></el-table-column>
-    <el-table-column width="100" prop="category" label="标准种类"></el-table-column>
+    <el-table-column width="80" prop="standardStatus" label="状态">
+      <template slot-scope="scope">{{ scope.row.standardStatus | codesFilter(standardStatusList) }}</template>
+    </el-table-column>
+    <el-table-column width="100" prop="standardType" label="标准类型">
+      <template slot-scope="scope">{{ scope.row.standardType | codesFilter(standardTypeList) }}</template>
+    </el-table-column>
+    <el-table-column width="100" prop="category" label="标准种类">
+      <template slot-scope="scope">{{ scope.row.category | codesFilter(standardCategoryList) }}</template>
+    </el-table-column>
     <el-table-column width="100" prop="activedTime" label="实施时间">
       <template slot-scope="scope">{{ scope.row.activedTime | dateFormat }}</template>
     </el-table-column>
@@ -23,7 +29,9 @@
       <template slot-scope="scope">{{ scope.row.entryTime | dateFormat }}</template>
     </el-table-column>
     <el-table-column width="100" prop="storage" label="存放位置"></el-table-column>
-    <el-table-column width="80" prop="InControlStatus" label="内控状态"></el-table-column>
+    <el-table-column width="80" prop="inControlStatus" label="内控状态">
+      <template slot-scope="scope">{{ scope.row.inControlStatus | codesFilter(standardStatusList) }}</template>
+    </el-table-column>
     <el-table-column width="100" prop="inControlTime" label="受控时间">
       <template slot-scope="scope">{{ scope.row.inControlTime | dateFormat }}</template>
     </el-table-column>
@@ -37,14 +45,51 @@
 </template>
 
 <script>
+import api from '@/api'
 export default {
   name: 'tpd-standard-list',
   props: {
     standardData: {},
   },
+  data() {
+    return {
+      standardStatusList: [],
+      standardTypeList: [],
+      standardCategoryList: [],
+    }
+  },
   methods: {
     showEdit(id) {
       this.$emit('showEdit', id)
+    },
+  },
+  created() {
+    api
+      .BASE_GET('logic/SIMI/SearchCode?parentKey=StandardStatus')
+      .then((res) => {
+        this.standardStatusList = res
+      })
+    api.BASE_GET('logic/SIMI/SearchCode?parentKey=StandardType').then((res) => {
+      this.standardTypeList = res
+    })
+    api
+      .BASE_GET('logic/SIMI/SearchCode?parentKey=StandardCategory')
+      .then((res) => {
+        this.standardCategoryList = res
+      })
+  },
+  filters: {
+    codesFilter: function (value, standardStatusList) {
+      let result = value
+      if (standardStatusList.length) {
+        for (let i = 0; i < standardStatusList.length; i++) {
+          if (standardStatusList[i].codeValue === value) {
+            result = standardStatusList[i].codeText
+            break
+          }
+        }
+      }
+      return result
     },
   },
 }
