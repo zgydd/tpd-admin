@@ -10,9 +10,15 @@
         </el-input>
       </el-col>
     </template>
-    <tpd-item-list v-if="showType" :itemData="itemData" @showEdit="showEdit"></tpd-item-list>
+    <tpd-item-table v-if="showType" :itemData="itemData" @showEdit="showEdit"></tpd-item-table>
     <div v-if="!showType">
-      <tpd-item-card v-for="item in itemData" :key="item.id" :item="item" @showEdit="showEdit"></tpd-item-card>
+      <tpd-item-card
+        v-for="item in itemData"
+        :key="item.id"
+        :item="item"
+        :canEdit="true"
+        @showEdit="showEdit"
+      ></tpd-item-card>
     </div>
     <template slot="footer">
       <el-switch
@@ -30,14 +36,14 @@
 <script>
 import api from '@/api'
 import TpdItemCard from '../../components/simi/item/itemCard'
-import TpdItemList from '../../components/simi/item/itemList'
+import TpdItemTable from '../../components/simi/item/itemTable'
 import TpdPagination from '../../components/common/pagination'
 import { mapState } from 'vuex'
 export default {
   name: 'simi-item-search',
   components: {
     TpdItemCard,
-    TpdItemList,
+    TpdItemTable,
     TpdPagination,
     // TpdItemGrid,
   },

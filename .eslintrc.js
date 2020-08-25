@@ -14,7 +14,8 @@ module.exports = {
     'space-before-function-paren': 'off',
     'curly': 'off',
     'eol-last': 'off',
-    'indent': 'off'
+    'indent': 'off',
+    'vue/require-prop-type-constructor': 'off'
   },
   parserOptions: {
     parser: 'babel-eslint'

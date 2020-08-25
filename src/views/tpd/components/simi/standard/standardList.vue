@@ -1,47 +1,27 @@
 <template>
-  <el-table :data="standardData" style="width:100%;" height="100%">
-    <el-table-column width="150" fixed prop="standardCode" label="编号"></el-table-column>
-    <el-table-column width="250" fixed prop="name" label="名称"></el-table-column>
-    <el-table-column width="80" prop="standardStatus" label="状态">
-      <template slot-scope="scope">{{ scope.row.standardStatus | codesFilter(standardStatusList) }}</template>
-    </el-table-column>
-    <el-table-column width="100" prop="standardType" label="标准类型">
-      <template slot-scope="scope">{{ scope.row.standardType | codesFilter(standardTypeList) }}</template>
-    </el-table-column>
-    <el-table-column width="100" prop="category" label="标准种类">
-      <template slot-scope="scope">{{ scope.row.category | codesFilter(standardCategoryList) }}</template>
-    </el-table-column>
-    <el-table-column width="100" prop="activedTime" label="实施时间">
-      <template slot-scope="scope">{{ scope.row.activedTime | dateFormat }}</template>
-    </el-table-column>
-    <el-table-column width="200" prop="chargeOrganization" label="主管部门"></el-table-column>
-    <el-table-column width="120" prop="controlCode" label="控制编号"></el-table-column>
-    <el-table-column width="150" prop="manageDepartment" label="管理部门"></el-table-column>
-    <el-table-column width="100" prop="buyTime" label="购买时间">
-      <template slot-scope="scope">{{ scope.row.buyTime | dateFormat }}</template>
-    </el-table-column>
-    <el-table-column width="80" prop="purchaser" label="购买人员"></el-table-column>
-    <el-table-column width="180" prop="price" label="标准价格">
-      <template slot-scope="scope">{{ scope.row.price | priceFormat }}</template>
-    </el-table-column>
-    <el-table-column width="50" prop="count" label="数量"></el-table-column>
-    <el-table-column width="100" prop="entryTime" label="入库时间">
-      <template slot-scope="scope">{{ scope.row.entryTime | dateFormat }}</template>
-    </el-table-column>
-    <el-table-column width="100" prop="storage" label="存放位置"></el-table-column>
-    <el-table-column width="80" prop="inControlStatus" label="内控状态">
-      <template slot-scope="scope">{{ scope.row.inControlStatus | codesFilter(standardStatusList) }}</template>
-    </el-table-column>
-    <el-table-column width="100" prop="inControlTime" label="受控时间">
-      <template slot-scope="scope">{{ scope.row.inControlTime | dateFormat }}</template>
-    </el-table-column>
-    <el-table-column width="80" prop="controller" label="控制人员"></el-table-column>
-    <el-table-column style="text-align: center" width="120" fixed="right" label="操作">
-      <template slot-scope="scope">
-        <el-button type="info" @click="showEdit(scope.row.id)">详情</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <ul class="tpd-normal-list">
+    <li v-for="standardItem in standardData" :key="standardItem.id">
+      <el-col :span="22">
+        <el-checkbox
+          v-model="standardItem.checked"
+          :disabled="standardItem.disabled"
+          :title="standardItem.standardCode + ':' + standardItem.name"
+          :label="standardItem.standardCode + ':' + standardItem.name"
+          @change="changeStandard($event, standardItem.id)"
+        ></el-checkbox>
+      </el-col>
+      <el-col :span="2" :offset="2">
+        <el-button
+          type="primary"
+          icon="el-icon-info"
+          circle
+          size="mini"
+          class="d2-fr"
+          @click="showStandardInfo(standardItem)"
+        ></el-button>
+      </el-col>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -50,6 +30,7 @@ export default {
   name: 'tpd-standard-list',
   props: {
     standardData: {},
+    checkMultiple: false,
   },
   data() {
     return {
@@ -59,8 +40,16 @@ export default {
     }
   },
   methods: {
-    showEdit(id) {
-      this.$emit('showEdit', id)
+    changeStandard: function (event, id) {
+      //   const checkedStandards = []
+      this.standardData.forEach((element) => {
+        if (!this.checkMultiple && element.id !== id) element.disabled = event
+        // if (element.checked) checkedStandards.push(element)
+      })
+      this.$emit('changeStandard', event, id)
+    },
+    showStandardInfo: function (standard) {
+      this.$emit('showStandardInfo', standard)
     },
   },
   created() {
@@ -96,13 +85,41 @@ export default {
 </script>
 
 <style lang="scss">
-.el-table {
-  th {
-    color: #409eff;
+.tpd-normal-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.8em;
+  li {
+    line-height: 2em;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0.3em 0.5em;
+    border-radius: 0.3em;
+    .el-col {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      margin: 0;
+    }
+    .el-col:last-child {
+      line-height: 2em;
+      height: 2em;
+      display: flex;
+      justify-content: center;
+      justify-items: center;
+      text-align: center;
+      align-items: center;
+    }
+    .el-checkbox {
+      line-height: 2em;
+      .el-checkbox__label {
+        line-height: 2em;
+      }
+    }
   }
-  th,
-  td {
-    text-align: center;
+  li:hover {
+    border-bottom: 1px dashed #ccc;
   }
 }
 </style>

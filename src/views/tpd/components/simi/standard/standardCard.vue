@@ -34,7 +34,13 @@
     </ul>
     <div class="bottom clearfix">
       <time class="time">{{ standard.publicationTime | dateFormat }}</time>出版
-      <el-button class="d2-fr" type="primary" icon="el-icon-edit" @click="showEdit(standard.id)"></el-button>
+      <el-button
+        v-if="canEdit"
+        class="d2-fr"
+        type="primary"
+        icon="el-icon-edit"
+        @click="showEdit(standard.id)"
+      ></el-button>
     </div>
   </el-card>
 </template>
@@ -44,6 +50,7 @@ export default {
   name: 'tpd-standard-card',
   props: {
     standard: {},
+    canEdit: true,
   },
   methods: {
     showEdit(id) {

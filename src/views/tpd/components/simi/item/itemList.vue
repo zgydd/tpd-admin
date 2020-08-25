@@ -1,26 +1,48 @@
 <template>
-  <el-table :data="itemData" style="width:100%;" height="100%">
-    <el-table-column width="250" fixed prop="name" label="名称"></el-table-column>
-    <el-table-column prop="englishName" label="英语名称"></el-table-column>
-    <el-table-column style="text-align: center" width="120" fixed="right" label="操作">
-      <template slot-scope="scope">
-        <el-button type="info" @click="showEdit(scope.row.id)">详情</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+  <ul class="tpd-normal-list">
+    <li v-for="item in itemData" :key="item.id">
+      <el-col :span="22">
+        <el-checkbox
+          v-model="item.checked"
+          :disabled="item.disabled"
+          :label="item.name"
+          @change="changeItem($event, item.id)"
+        ></el-checkbox>
+      </el-col>
+      <el-col :span="2" :offset="2">
+        <el-button
+          type="primary"
+          icon="el-icon-info"
+          circle
+          size="mini"
+          class="d2-fr"
+          @click="showItemInfo(item)"
+        ></el-button>
+      </el-col>
+    </li>
+  </ul>
 </template>
 <script>
 export default {
   name: 'tpd-item-list',
   props: {
     itemData: {},
+    checkMultiple: false,
   },
   data() {
     return {}
   },
   methods: {
-    showEdit(id) {
-      this.$emit('showEdit', id)
+    changeItem: function (event, id) {
+      // const checkedItems = []
+      this.itemData.forEach((element) => {
+        if (!this.checkMultiple && element.id !== id) element.disabled = event
+        // if (element.checked) checkedItems.push(element)
+      })
+      this.$emit('changeItem', event, id)
+    },
+    showItemInfo: function (item) {
+      this.$emit('showItemInfo', item)
     },
   },
 }

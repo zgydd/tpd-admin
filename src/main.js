@@ -21,19 +21,19 @@ import {
 Vue.use(d2Admin)
 
 Vue.filter('dateFormat', function (value) {
-  if (!value) return '';
-  return value.substring(0, value.indexOf('T'));
+  if (!value) return ''
+  return value.substring(0, value.indexOf('T'))
 })
 Vue.filter('priceFormat', function (value) {
-  if (!value) return '';
-  value = parseFloat((value + '').replace(/[^\d\.-]/g, '')).toFixed(2) + '';
-  let l = value.split('.')[0].split('').reverse(),
-    r = value.split('.')[1];
-  let t = '';
+  if (!value) return ''
+  value = parseFloat((value + '').replace(/[^\d.-]/g, '')).toFixed(2) + ''
+  const l = value.split('.')[0].split('').reverse()
+  const r = value.split('.')[1]
+  let t = ''
   for (let i = 0; i < l.length; i++) {
-    t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? ',' : '');
+    t += l[i] + ((i + 1) % 3 === 0 && (i + 1) !== l.length ? ',' : '')
   }
-  return '￥' + t.split('').reverse().join('') + '.' + r;
+  return '￥' + t.split('').reverse().join('') + '.' + r
 })
 
 new Vue({

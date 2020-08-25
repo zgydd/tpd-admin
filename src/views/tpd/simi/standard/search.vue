@@ -10,12 +10,13 @@
         </el-input>
       </el-col>
     </template>
-    <tpd-standard-list v-if="showType" :standardData="standardData" @showEdit="showEdit"></tpd-standard-list>
+    <tpd-standard-table v-if="showType" :standardData="standardData" @showEdit="showEdit"></tpd-standard-table>
     <div v-if="!showType">
       <tpd-standard-card
         v-for="standard in standardData"
         :key="standard.id"
         :standard="standard"
+        :canEdit="true"
         @showEdit="showEdit"
       ></tpd-standard-card>
     </div>
@@ -35,7 +36,7 @@
 <script>
 import api from '@/api'
 import TpdStandardCard from '../../components/simi/standard/standardCard'
-import TpdStandardList from '../../components/simi/standard/standardList'
+import TpdStandardTable from '../../components/simi/standard/standardTable'
 import TpdPagination from '../../components/common/pagination'
 // import TpdStandardGrid from '../../components/layout/grid'
 import { mapState } from 'vuex'
@@ -43,7 +44,7 @@ export default {
   name: 'simi-standard-search',
   components: {
     TpdStandardCard,
-    TpdStandardList,
+    TpdStandardTable,
     TpdPagination,
     // TpdStandardGrid,
   },

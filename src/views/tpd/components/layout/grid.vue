@@ -26,7 +26,6 @@
 <script>
 import Vue from 'vue'
 import { GridLayout, GridItem } from 'vue-grid-layout'
-import TpdStandardCard from '../simi/standard/standardCard'
 Vue.component('d2-grid-layout', GridLayout)
 Vue.component('d2-grid-item', GridItem)
 export default {

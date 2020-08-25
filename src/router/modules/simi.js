@@ -36,6 +36,16 @@ export default {
       }
     },
     {
+      path: 'standard-connect-item',
+      name: `${pre}standard-connect-item`,
+      component: _import('tpd/simi/standard/connectItem'),
+      meta: {
+        ...meta,
+        title: '标准关联项目',
+        cache: true
+      }
+    },
+    {
       path: 'item-search',
       name: `${pre}item-search`,
       component: _import('tpd/simi/item/search'),
@@ -72,6 +82,16 @@ export default {
       meta: {
         ...meta,
         title: '指标检索',
+        cache: true
+      }
+    },
+    {
+      path: 'find-standard-info',
+      name: `${pre}find-standard-info`,
+      component: _import('tpd/simi/find/standardInfo'),
+      meta: {
+        ...meta,
+        title: '标准信息查询',
         cache: true
       }
     },

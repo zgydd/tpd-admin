@@ -10,6 +10,7 @@
     </ul>
     <div class="bottom clearfix">
       <el-button
+        v-if="canEdit"
         class="d2-fr bottom-button"
         type="primary"
         icon="el-icon-edit"
@@ -23,6 +24,7 @@ export default {
   name: 'tpd-item-card',
   props: {
     item: {},
+    canEdit: true,
   },
   methods: {
     showEdit(id) {
