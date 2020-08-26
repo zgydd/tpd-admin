@@ -1,7 +1,7 @@
 <template>
   <d2-container class="page">
     <template slot="header">
-      <el-col :span="7">
+      <el-col :span="6">
         <el-input
           placeholder="检索关键字"
           v-model="filterStandardValue"
@@ -11,11 +11,17 @@
           <el-button slot="append" icon="el-icon-search" @click="searchStandard()"></el-button>
         </el-input>
       </el-col>
-      <el-col :span="10" :offset="1">
+      <el-col :span="6" :offset="2">
         <el-input placeholder="检索关键字" v-model="filterItemValue" @keyup.enter.native="searchItem()">
           <template slot="prepend">检索项目</template>
           <el-button slot="append" icon="el-icon-search" @click="searchItem()"></el-button>
         </el-input>
+      </el-col>
+      <el-col :span="6" :offset="4">
+        <tpd-pagination
+          :paginationInfo="connectedItemPaginationInfo"
+          @paginationChange="changeStandard(true, currentStandardId)"
+        ></tpd-pagination>
       </el-col>
     </template>
     <div style="height: 98%;">
@@ -31,7 +37,28 @@
           <SplitPane split="horizontal" :min-percent="10" :default-percent="20">
             <template slot="paneL">
               <div class="right-panel">
-                <el-tag v-for="item in connectedItems" :key="item.id">{{item.name}}</el-tag>
+                <ul class="connected-list">
+                  <li v-for="item in connectedItems" :key="item.id">
+                    <section :title="item.name">
+                      <el-input
+                        type="number"
+                        placeholder="序号"
+                        v-model="item.sequence"
+                        :min="0"
+                        @change="itemSequenceChange(item)"
+                      >
+                        <template slot="prepend">{{item.name|maxString20}}</template>
+                      </el-input>
+                    </section>
+                    <el-input-number
+                      v-model="item.price"
+                      :step="0.01"
+                      :precision="2"
+                      :min="0"
+                      @change="itemPriceChange(item)"
+                    ></el-input-number>
+                  </li>
+                </ul>
               </div>
             </template>
             <template slot="paneR">
@@ -131,30 +158,60 @@ export default {
       selectedItemData: [],
       viewItemInfo: false,
       connectedItems: [],
+      connectedItemPaginationInfo: {
+        pageNumber: 1,
+        pageSize: 10,
+        total: 0,
+      },
     }
   },
   methods: {
-    checkConnected: function () {
-      this.itemData.forEach((element) => {
-        element.checked = false
-        this.connectedItems.forEach((element2) => {
-          if (element.id === element2.itemId) element.checked = true
+    itemSequenceChange: function (item) {
+      item.sequence = parseInt(item.sequence)
+      api
+        .BASE_POST('logic/SIMI/UpdateStandardItemConnectInfo', item)
+        .then((res) => {
+          this.connectedItems.sort((a, b) => {
+            return a.sequence - b.sequence
+          })
         })
-      })
-      this.itemData.push()
+    },
+    itemPriceChange: function (item) {
+      item.price = parseFloat(item.price)
+      api.BASE_POST('logic/SIMI/UpdateStandardItemConnectInfo', item)
+    },
+    checkConnected: function () {
+      api
+        .BASE_GET(
+          `logic/SIMI/SearchStandardItemConnect?standardId=${this.currentStandardId}&pageNumber=1&pageSize=999999`
+        )
+        .then((res) => {
+          this.itemData.forEach((element) => {
+            element.checked = false
+            res.data.forEach((element2) => {
+              if (element.id === element2.itemId) element.checked = true
+            })
+          })
+          this.itemData.push()
+        })
     },
     changeStandard: function (event, id) {
       if (!event) {
         this.currentStandardId = 0
         this.connectedItems = []
+        this.connectedItemPaginationInfo.pageNumber = 1
+        this.connectedItemPaginationInfo.total = 0
         this.checkConnected()
         return
       }
       api
-        .BASE_GET('logic/SIMI/SearchStandardItemConnect?standardId=' + id)
+        .BASE_GET(
+          `logic/SIMI/SearchStandardItemConnect?standardId=${id}&pageNumber=${this.connectedItemPaginationInfo.pageNumber}&pageSize=${this.connectedItemPaginationInfo.pageSize}`
+        )
         .then((res) => {
           this.currentStandardId = id
           this.connectedItems = res.data
+          this.connectedItemPaginationInfo.total = res.total
           this.checkConnected()
         })
     },
@@ -182,8 +239,12 @@ export default {
     searchStandard: function () {
       if (!this.filterStandardValue) {
         this.standardData = []
+        this.standardPaginationInfo.pageNumber = 1
         this.standardPaginationInfo.total = 0
         this.$store.commit('simi/standard/refreshListFinished')
+        this.changeStandard(false, 0)
+        this.filterItemValue = ''
+        this.searchItem()
         return
       }
       api
@@ -201,6 +262,7 @@ export default {
     searchItem: function () {
       if (!this.filterItemValue) {
         this.itemData = []
+        this.itemPaginationInfo.pageNumber = 1
         this.itemPaginationInfo.total = 0
         this.$store.commit('simi/item/refreshListFinished')
         return
@@ -236,5 +298,18 @@ export default {
   display: block;
   width: auto;
   margin: 2em;
+}
+.connected-list {
+  list-style: none;
+  li {
+    margin-bottom: 0.2em;
+  }
+  section {
+    display: inline-block;
+    width: 50%;
+  }
+  .el-input-number {
+    margin-left: 0.8em;
+  }
 }
 </style>

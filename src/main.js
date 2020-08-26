@@ -35,6 +35,12 @@ Vue.filter('priceFormat', function (value) {
   }
   return '￥' + t.split('').reverse().join('') + '.' + r
 })
+Vue.filter('maxString20', function (value) {
+  if (!value) return ''
+  value = '' + value
+  if (value.length <= 20) return value
+  return value.substring(0, 21) + '...'
+})
 
 new Vue({
   router,
