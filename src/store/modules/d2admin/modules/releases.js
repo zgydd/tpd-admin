@@ -9,7 +9,7 @@ export default {
      */
     versionShow () {
       util.log.capsule('tpd-admin', `v${process.env.VUE_APP_VERSION}`)
-      console.log('Fork by https://github.com/d2-projects/d2-admin V1.14.0')
+      console.log('Fork by https://github.com/d2-projects/d2-admin V1.20.0')
     }
   }
 }

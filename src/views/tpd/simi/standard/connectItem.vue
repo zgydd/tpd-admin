@@ -255,6 +255,7 @@ export default {
         )
         .then((res) => {
           this.standardData = res.data
+          this.standardPaginationInfo.pageNumber = 1
           this.standardPaginationInfo.total = res.total
           this.$store.commit('simi/standard/refreshListFinished')
         })
@@ -275,6 +276,7 @@ export default {
         )
         .then((res) => {
           this.itemData = res.data
+          this.itemPaginationInfo.pageNumber = 1
           this.itemPaginationInfo.total = res.total
           this.checkConnected()
           this.$store.commit('simi/item/refreshListFinished')
